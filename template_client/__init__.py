@@ -29,7 +29,7 @@ def from_str_none(x: Any) -> str | None:
     return from_str(x)
 
 
-def from_list(f: Callable[[Any], T], x: Any) -> list[T]:
+def from_list[T](f: Callable[[Any], T], x: Any) -> list[T]:
     """Get a list from an object."""
     if not isinstance(x, list):
         msg = f"Expected list, got {type(x)}"
