@@ -1,25 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "template_client"
+version = "0.0.1"
+description = "Client for the TEMPLATE API"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Patrick Cartwright", email = "pcartwright1981@gmail.com" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "aiohttp==3.13.2",
+    "colorlog==6.10.1",
+]
+
+[project.urls]
+Repository = "https://github.com/pcartwright81/template_client"
+
+[project.optional-dependencies]
+test = ["pytest==8.3.4", "pytest-asyncio==0.25.3", "pytest-cov==6.0.0", "aioresponses==0.7.4"]
+dev = ["pip>=21.3.1", "ruff==0.14.6"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-testpaths = [
-    "tests",
-]
-norecursedirs = [
-    ".git",
-    "testing_config",
-]
-
+testpaths = ["tests"]
+norecursedirs = [".git", "testing_config"]
 addopts = "--cov-report=xml:coverage.xml --cov-report=term-missing --cov=template_client --cov-fail-under=100"
 
 [tool.coverage.report]
-exclude_also = [
-    "raise NotImplementedError",
-    "if TYPE_CHECKING:",
-    "setup.py"
+exclude_also = ["raise NotImplementedError", "if TYPE_CHECKING:", "setup.py"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN401", # Dynamically typed expressions (typing.Any) are disallowed
+    "D203",   # no-blank-line-before-class (incompatible with formatter)
+    "D212",   # multi-line-summary-first-line (incompatible with formatter)
+    "COM812", # incompatible with formatter
+    "ISC001", # incompatible with formatter
+    "EXE002", # shebang-missing-executable-file
 ]
 
-[tool.coverage.run]
-omit = [
-    "setup.py",
-    "tests/test_live.py",
-    ]
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore `S101` (use of assert)` and `SLF001` (private members)` in path/to/file.py`.
+"tests/*" = ["S101", "SLF001", "PT009"]
