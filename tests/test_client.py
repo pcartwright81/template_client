@@ -1,6 +1,6 @@
 """Tests for the WeatherClient."""
 
-from collections.abc import Generator
+from typing import TYPE_CHECKING
 
 import pytest
 from aiohttp import ClientSession
@@ -8,9 +8,12 @@ from aioresponses import aioresponses
 
 from template_client.client import WeatherClient
 
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
 
 @pytest.fixture
-def mock_aioresponses() -> Generator[aioresponses, None, None]:
+def mock_aioresponses() -> Generator[aioresponses]:
     """Fixture to manage aioresponses for mocking HTTP requests."""
     with aioresponses() as m:
         yield m
