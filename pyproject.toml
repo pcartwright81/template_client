@@ -23,8 +23,8 @@ dependencies = [
 Repository = "https://github.com/pcartwright81/template_client"
 
 [project.optional-dependencies]
-test = ["pytest==9.0.2", "pytest-asyncio==1.3.0", "pytest-cov==7.0.0", "aioresponses==0.7.4", "setuptools==80.9.0"]
-dev = ["pip>=21.3.1", "ruff==0.14.6"]
+test = ["pytest==9.0.2", "pytest-asyncio==1.3.0", "pytest-cov==7.0.0", "aioresponses==0.7.8", "setuptools==80.9.0"]
+dev = ["pip>=21.3.1", "ruff==0.14.10"]
 
 [tool.setuptools.packages.find]
 where = ["."]
