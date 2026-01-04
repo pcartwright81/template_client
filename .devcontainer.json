@@ -29,7 +29,7 @@
         }
     },
     "containerEnv": {
-        "TEMPLATE_USERNAME": " ${localEnv:TEMPLATE_USERNAME}",
+        "TEMPLATE_USERNAME": "${localEnv:TEMPLATE_USERNAME}",
         "TEMPLATE_PASSWORD": "${localEnv:TEMPLATE_PASSWORD}"
     },
     "containerUser": "vscode"

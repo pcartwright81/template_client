@@ -2,7 +2,15 @@
 
 set -e
 
-cd "$(dirname "$0")/.."
+echo "Setting up template_client development environment..."
 
+# Install the package with dev and test dependencies
 python3 -m pip install --upgrade pip
 python3 -m pip install -e ".[dev,test]"
+
+echo "Development environment setup complete!"
+echo ""
+echo "Next steps:"
+echo "  - Run tests: pytest"
+echo "  - Lint code: ruff check ."
+echo "  - Format code: ruff format ."
