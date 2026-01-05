@@ -14,7 +14,7 @@ A modern Python template for building API clients with async/await patterns.
 
 ## Requirements
 
-- Python 3.14+
+- Python 3.12+
 - aiohttp
 - colorlog
 
@@ -100,16 +100,20 @@ Async client for the National Weather Service API.
 Fetch forecast data for a specific latitude and longitude.
 
 **Parameters:**
+
 - `lat` (float): The latitude of the location
 - `lon` (float): The longitude of the location
 
 **Returns:**
+
 - `dict[str, Any]`: Forecast data from the API
 
 **Raises:**
+
 - `aiohttp.ClientResponseError`: If the API returns a non-200 status
 
 **Example:**
+
 ```python
 async with aiohttp.ClientSession() as session:
     client = WeatherClient(session)

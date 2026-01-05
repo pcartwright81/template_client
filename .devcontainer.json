@@ -1,6 +1,6 @@
 {
     "name": "pcartwright81/template_client",
-    "image": "mcr.microsoft.com/devcontainers/python:3.14",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
     "postCreateCommand": "scripts/setup",
     "customizations": {
         "vscode": {
