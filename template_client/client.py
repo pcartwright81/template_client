@@ -1,9 +1,8 @@
 """Client for interacting with the National Weather Service API."""
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-if TYPE_CHECKING:
-    import aiohttp
+import aiohttp
 
 
 class WeatherClient:
