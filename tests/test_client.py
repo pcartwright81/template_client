@@ -1,15 +1,12 @@
 """Tests for the WeatherClient."""
 
-from typing import TYPE_CHECKING
+from collections.abc import Generator
 
 import pytest
 from aiohttp import ClientSession
 from aioresponses import aioresponses
 
 from template_client.client import WeatherClient
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
 
 
 @pytest.fixture
