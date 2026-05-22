@@ -28,7 +28,7 @@ test = [
     "setuptools==82.0.1",
     "colorlog==6.10.1",
 ]
-dev = ["pip>=21.3.1", "ruff==0.15.13"]
+dev = ["pip>=21.3.1", "ruff==0.15.14"]
 
 [tool.setuptools.packages.find]
 where = ["."]
