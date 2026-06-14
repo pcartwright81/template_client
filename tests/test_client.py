@@ -3,7 +3,7 @@
 from collections.abc import Generator
 
 import pytest
-from aiohttp import ClientSession, ClientResponseError
+from aiohttp import ClientResponseError, ClientSession
 from aiointercept import AsyncIntercept
 
 from template_client.client import WeatherClient
