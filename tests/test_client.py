@@ -3,7 +3,7 @@
 from collections.abc import Generator
 
 import pytest
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientResponseError
 from aioresponses import aioresponses
 
 from template_client.client import WeatherClient
@@ -44,3 +44,43 @@ async def test_get_forecast(mock_aioresponses: aioresponses) -> None:
 
     mock_aioresponses.assert_called_with(points_url, method="GET")
     mock_aioresponses.assert_called_with(forecast_url, method="GET")
+
+
+@pytest.mark.asyncio
+async def test_get_forecast_points_error(mock_aioresponses: aioresponses) -> None:
+    """Test error handling when points endpoint returns an error."""
+    lat = 39.7456
+    lon = -97.0892
+
+    points_url = f"https://api.weather.gov/points/{lat},{lon}"
+    mock_aioresponses.get(points_url, status=400)
+
+    async with ClientSession() as session:
+        client = WeatherClient(session)
+        with pytest.raises(ClientResponseError):
+            await client.get_forecast(lat, lon)
+
+
+@pytest.mark.asyncio
+async def test_get_forecast_forecast_error(mock_aioresponses: aioresponses) -> None:
+    """Test error handling when forecast endpoint returns an error."""
+    lat = 39.7456
+    lon = -97.0892
+
+    points_url = f"https://api.weather.gov/points/{lat},{lon}"
+    mock_aioresponses.get(
+        points_url,
+        payload={
+            "properties": {
+                "forecast": "https://api.weather.gov/gridpoints/TOP/31,80/forecast"
+            }
+        },
+    )
+
+    forecast_url = "https://api.weather.gov/gridpoints/TOP/31,80/forecast"
+    mock_aioresponses.get(forecast_url, status=500)
+
+    async with ClientSession() as session:
+        client = WeatherClient(session)
+        with pytest.raises(ClientResponseError):
+            await client.get_forecast(lat, lon)
