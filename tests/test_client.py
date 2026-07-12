@@ -28,11 +28,7 @@ async def test_get_forecast(mock_intercept: AsyncIntercept) -> None:
 
     mock_intercept.get(
         points_url,
-        payload={
-            "properties": {
-                "forecast": forecast_url
-            }
-        },
+        payload={"properties": {"forecast": forecast_url}},
     )
     mock_intercept.get(forecast_url, payload=mock_data)
 
@@ -69,11 +65,7 @@ async def test_get_forecast_forecast_error(mock_intercept: AsyncIntercept) -> No
 
     mock_intercept.get(
         points_url,
-        payload={
-            "properties": {
-                "forecast": forecast_url
-            }
-        },
+        payload={"properties": {"forecast": forecast_url}},
     )
     mock_intercept.get(forecast_url, status=500)
 
