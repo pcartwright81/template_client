@@ -1,40 +1,37 @@
 """Tests for the WeatherClient."""
 
-from collections.abc import Generator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 import pytest
-from aiohttp import ClientSession
-from aioresponses import aioresponses
+from aiohttp import ClientResponseError, ClientSession
+from aiointercept.core import aiointercept
 
 from template_client.client import WeatherClient
 
 
 @pytest.fixture
-def mock_aioresponses() -> Generator[aioresponses]:
-    """Fixture to manage aioresponses for mocking HTTP requests."""
-    with aioresponses() as m:
-        yield m
+async def aiointercept_mock() -> AsyncGenerator[Any]:
+    """Override the plugin fixture to mock external URLs like api.weather.gov."""
+    async with aiointercept(mock_external_urls=True) as intercept:
+        yield intercept
 
 
 @pytest.mark.asyncio
-async def test_get_forecast(mock_aioresponses: aioresponses) -> None:
+async def test_get_forecast(aiointercept_mock: Any) -> None:
     """Test retrieving a forecast successfully via the two-stage API call."""
     lat = 39.7456
     lon = -97.0892
 
     points_url = f"https://api.weather.gov/points/{lat},{lon}"
-    mock_aioresponses.get(
-        points_url,
-        payload={
-            "properties": {
-                "forecast": "https://api.weather.gov/gridpoints/TOP/31,80/forecast"
-            }
-        },
-    )
-
     forecast_url = "https://api.weather.gov/gridpoints/TOP/31,80/forecast"
     mock_data = {"properties": {"periods": [{"name": "Today", "temperature": 70}]}}
-    mock_aioresponses.get(forecast_url, payload=mock_data)
+
+    aiointercept_mock.get(
+        points_url,
+        payload={"properties": {"forecast": forecast_url}},
+    )
+    aiointercept_mock.get(forecast_url, payload=mock_data)
 
     async with ClientSession() as session:
         client = WeatherClient(session)
@@ -42,5 +39,38 @@ async def test_get_forecast(mock_aioresponses: aioresponses) -> None:
 
     assert result == mock_data
 
-    mock_aioresponses.assert_called_with(points_url, method="GET")
-    mock_aioresponses.assert_called_with(forecast_url, method="GET")
+
+@pytest.mark.asyncio
+async def test_get_forecast_points_error(aiointercept_mock: Any) -> None:
+    """Test error handling when points endpoint returns an error."""
+    lat = 39.7456
+    lon = -97.0892
+
+    points_url = f"https://api.weather.gov/points/{lat},{lon}"
+    aiointercept_mock.get(points_url, status=400)
+
+    async with ClientSession() as session:
+        client = WeatherClient(session)
+        with pytest.raises(ClientResponseError):
+            await client.get_forecast(lat, lon)
+
+
+@pytest.mark.asyncio
+async def test_get_forecast_forecast_error(aiointercept_mock: Any) -> None:
+    """Test error handling when forecast endpoint returns an error."""
+    lat = 39.7456
+    lon = -97.0892
+
+    points_url = f"https://api.weather.gov/points/{lat},{lon}"
+    forecast_url = "https://api.weather.gov/gridpoints/TOP/31,80/forecast"
+
+    aiointercept_mock.get(
+        points_url,
+        payload={"properties": {"forecast": forecast_url}},
+    )
+    aiointercept_mock.get(forecast_url, status=500)
+
+    async with ClientSession() as session:
+        client = WeatherClient(session)
+        with pytest.raises(ClientResponseError):
+            await client.get_forecast(lat, lon)
