@@ -21,15 +21,15 @@ Repository = "https://github.com/pcartwright81/template_client"
 
 [project.optional-dependencies]
 test = [
-    "pytest==9.1.0",
+    "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
     "pytest-cov==7.1.0",
-    "aioresponses==0.7.8",
+    "aioresponses==0.7.9",
     "setuptools==83.0.0",
-    "colorlog==6.10.1",
-    "aiointercept==0.1.7",
+    "colorlog==6.11.0",
+    "aiointercept==0.1.9",
 ]
-dev = ["pip>=21.3.1", "ruff==0.15.17"]
+dev = ["pip>=21.3.1", "ruff==0.15.22"]
 
 [tool.setuptools.packages.find]
 where = ["."]
