@@ -40,6 +40,7 @@ pip install -e ".[dev,test]"
 import aiohttp
 from template_client.client import WeatherClient
 
+
 async def get_weather():
     async with aiohttp.ClientSession() as session:
         client = WeatherClient(session)
