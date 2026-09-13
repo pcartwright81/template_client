@@ -29,7 +29,7 @@ test = [
     "colorlog==6.12.0",
     "aiointercept==0.1.10",
 ]
-dev = ["pip>=21.3.1", "ruff==0.16.6"]
+dev = ["pip>=21.3.1", "ruff==0.16.7"]
 
 [tool.setuptools.packages.find]
 where = ["."]
