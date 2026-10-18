@@ -14,7 +14,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["aiohttp==3.14.3"]
+dependencies = ["aiohttp==3.14.5"]
 
 [project.urls]
 Repository = "https://github.com/pcartwright81/template_client"
@@ -29,7 +29,7 @@ test = [
     "colorlog==6.12.0",
     "aiointercept==0.1.12",
 ]
-dev = ["pip>=21.3.1", "ruff==0.16.10"]
+dev = ["pip>=21.3.1", "ruff==0.17.1"]
 
 [tool.setuptools.packages.find]
 where = ["."]
